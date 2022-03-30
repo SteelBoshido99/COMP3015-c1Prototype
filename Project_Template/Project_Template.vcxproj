@@ -78,8 +78,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>E:\University Work\COMP3015\Dependencies\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\University Work\COMP3015\Dependencies\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\GitHub\COMP3015-c1Prototype\Dependencies\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\GitHub\COMP3015-c1Prototype\Dependencies\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -145,7 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\GLADSources\src\glad.c" />
+    <ClCompile Include="..\GLADSources\src\glad.c" />
     <ClCompile Include="helper\glslprogram.cpp" />
     <ClCompile Include="helper\glutils.cpp" />
     <ClCompile Include="helper\objmesh.cpp" />

@@ -48,14 +48,14 @@
     <ClCompile Include="helper\teapot.cpp">
       <Filter>helper</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\GLADSources\src\glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="helper\objmesh.cpp">
       <Filter>helper</Filter>
     </ClCompile>
     <ClCompile Include="helper\plane.cpp">
       <Filter>helper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GLADSources\src\glad.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
