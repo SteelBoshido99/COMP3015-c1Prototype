@@ -8,15 +8,9 @@ using std::endl;
 using glm::vec3;
 using glm::mat4;
 
-//constructor for torus
-//SceneBasic_Uniform::SceneBasic_Uniform() : torus(0.7f, 0.3f, 50, 50) {}
-
-//constructor for teapot
-//SceneBasic_Uniform::SceneBasic_Uniform() : teapot(13, glm::translate(mat4(1.0f), vec3(0.0f, 1.5f, 0.25f))) {}
-
-//constructor for pig
+//constructor for Racoon
 SceneBasic_Uniform::SceneBasic_Uniform() : plane(10.0f, 10.0f, 100, 100) {
-    mesh = ObjMesh::load("../Project_Template/media/testRacoon.obj", true);
+    mesh = ObjMesh::load("../Project_Template/media/Bear.obj", true);
 }
 
 void SceneBasic_Uniform::initScene()
@@ -29,7 +23,7 @@ void SceneBasic_Uniform::initScene()
     model = mat4(1.0f);
 
     //Setting the coords for the camera view
-    view = glm::lookAt(vec3(20.2f, 1.0f, 10.0f), vec3(0.0f, 0.6f, 0.0f), vec3(0.0f, 5.0f, 0.0f));
+    view = glm::lookAt(vec3(10.2f, 1.0f, 10.0f), vec3(0.0f, 0.6f, 0.0f), vec3(0.0f, 5.0f, 0.0f));
 
     projection = mat4(1.0f);
 
@@ -38,7 +32,7 @@ void SceneBasic_Uniform::initScene()
     {
         std::stringstream name;
         name << "lights [" << i << "].Positions";
-        x = 2.0f * cosf((glm::two_pi<float>() / 3) * i);
+        x = 2.0f * cosf((glm:: two_pi<float>() / 3) * i);
         z = 2.0f * sinf((glm::two_pi<float>() / 3) * i);
         prog.setUniform(name.str().c_str(), view * glm::vec4(x, 1.2f, z + 1.0f, 1.0f));
     }
@@ -53,23 +47,6 @@ void SceneBasic_Uniform::initScene()
     prog.setUniform("lights[1].La", vec3(0.0f, 0.8f, 0.8f));
     prog.setUniform("lights[2].La", vec3(0.8f, 0.0f, 0.8f));
  
-    
-    ////enable this group for torus rendering, make sure you comment the teapot group
-    //model = glm::rotate(model, glm::radians(-35.0f), vec3(1.0f, 0.0f, 0.0f)); //rotate model on x axis
-    //model = glm::rotate(model, glm::radians(15.0f), vec3(0.0f, 1.0f, 0.0f));  //rotate model on y axis
-    //view = glm::lookAt(vec3(0.0f, 0.0f, 2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f)); //sets the view - read in the documentation about glm::lookAt. if still have questions,come an dtalk to me
-
-    ////enable this group for teapot rendering, make sure you comment the torus group
-    ///*model = glm::translate(model, vec3(0.0, -1.0, 0.0));
-    //model = glm::rotate(model, glm::radians(-90.0f), vec3(1.0f, 0.0f, 0.0f));
-    //view = glm::lookAt(vec3(2.0f, 4.0f, 2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));*/
-
-    //projection = mat4(1.0f);
-
-    ////make sure you use the correct name, check your vertex shader
-    //prog.setUniform("Material.Kd", 0.2f, 0.55f, 0.9f); //seting the Kd uniform
-    //prog.setUniform("Light.Ld", 1.0f, 1.0f, 1.0f);     //setting the Ld uniform
-    //prog.setUniform("Light.Position", view * glm::vec4(5.0f, 5.0f, 2.0f, 0.0f)); //setting Light Position
 }
 
 void SceneBasic_Uniform::compile()
@@ -106,16 +83,16 @@ void SceneBasic_Uniform::render()
     setMatrices(); //we set matrices 
     mesh->render();
 
-    //Rendering the plane
-    prog.setUniform("Material.Kd", 0.1f, 0.1f, 0.1f);
-    prog.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
-    prog.setUniform("Material.Ka", 0.1f, 0.1f, 0.1f);
-    prog.setUniform("Material.Shininess", 180.0f);
+    ////Rendering the plane
+    //prog.setUniform("Material.Kd", 0.1f, 0.1f, 0.1f);
+    //prog.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
+    //prog.setUniform("Material.Ka", 0.1f, 0.1f, 0.1f);
+    //prog.setUniform("Material.Shininess", 180.0f);
 
-    model = mat4(1.0f);
-    model = glm::translate(model, vec3(0.0f, -10.f, 0.0f)); //This involves the plain position (x, y, z)
-    setMatrices(); //we set matrices 
-    plane.render();
+    //model = mat4(1.0f);
+    //model = glm::translate(model, vec3(0.0f, -10.f, 0.0f)); //This involves the plain position (x, y, z)
+    //setMatrices(); //we set matrices 
+    //plane.render();
 
 
 }

@@ -2,11 +2,12 @@
 
 //in variables, this are in model coordinates
 layout (location = 0) in vec3 VertexPosition; 
-layout (location = 1) in vec3 VertexNormal; 
+layout (location = 1) in vec3 VertexNormal;
+//layout (location = 2) in vec2 VertexTexCoord;
 
 //out vector needed for the fragment shader
-//out vec3 LightIntensity; 
 out vec3 Colour;
+out vec2 TexCoord;
 
  //light information struct
 uniform struct LightInfo 
@@ -80,6 +81,7 @@ void main()
          Colour += phongModel( i, camCoords, n );
     }
     
+    //TexCoord = VertexTexCoord;
 
   //calculate light direction, notice the light is already in the view coordinates 
   //vec3 s = normalize(vec3(lights[light].Position - pos));

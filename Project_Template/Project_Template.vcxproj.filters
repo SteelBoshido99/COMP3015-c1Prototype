@@ -73,9 +73,6 @@
     <ClInclude Include="helper\scenerunner.h">
       <Filter>helper</Filter>
     </ClInclude>
-    <ClInclude Include="helper\stb\stb_image.h">
-      <Filter>helper\stb</Filter>
-    </ClInclude>
     <ClInclude Include="helper\stb\stb_image_write.h">
       <Filter>helper\stb</Filter>
     </ClInclude>
@@ -114,6 +111,9 @@
     </ClInclude>
     <ClInclude Include="helper\utils.h">
       <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\stb\stb_image.h">
+      <Filter>helper\stb</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

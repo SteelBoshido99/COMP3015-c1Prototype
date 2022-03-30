@@ -11,6 +11,7 @@
 #include "helper/plane.h"
 #include "helper/objmesh.h"
 #include <glm/glm.hpp>
+//#include "helper/cube.h"
 
 
 class SceneBasic_Uniform : public Scene
@@ -21,7 +22,10 @@ private:
     //Torus torus;
     //Teapot teapot;
 
+    //Cube cube;
+
     Plane plane;
+
     std::unique_ptr<ObjMesh> mesh;
 
     void setMatrices();
