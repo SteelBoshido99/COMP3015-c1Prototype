@@ -10,7 +10,9 @@ using glm::mat4;
 
 //constructor for Racoon
 SceneBasic_Uniform::SceneBasic_Uniform() : plane(10.0f, 10.0f, 100, 100) {
-    mesh = ObjMesh::load("../Project_Template/media/Bear.obj", true);
+    bear = ObjMesh::load("../Project_Template/media/Bear.obj", true);
+    tree = ObjMesh::load("../Project_Template/media/lpTree.obj", true);
+    
 }
 
 void SceneBasic_Uniform::initScene()
@@ -23,10 +25,11 @@ void SceneBasic_Uniform::initScene()
     model = mat4(1.0f);
 
     //Setting the coords for the camera view
-    view = glm::lookAt(vec3(10.2f, 1.0f, 10.0f), vec3(0.0f, 0.6f, 0.0f), vec3(0.0f, 5.0f, 0.0f));
+    view = glm::lookAt(vec3(5.0f, 1.0f, 5.0f), vec3(0.0f, 0.6f, 0.0f), vec3(0.0f, 5.0f, 0.0f));
 
     projection = mat4(1.0f);
 
+    //Lights
     float x, z;
     for (int i = 0; i < 3; i++)
     {
@@ -37,6 +40,7 @@ void SceneBasic_Uniform::initScene()
         prog.setUniform(name.str().c_str(), view * glm::vec4(x, 1.2f, z + 1.0f, 1.0f));
     }
 
+    //Spot light
     prog.setUniform("lights[0].L", vec3(0.0f, 0.0f, 0.8f));
     prog.setUniform("lights[1].L", vec3(0.0f, 0.8f, 0.8f));
     prog.setUniform("lights[2].L", vec3(0.8f, 0.0f, 0.8f));
@@ -81,18 +85,21 @@ void SceneBasic_Uniform::render()
     model = mat4(1.0f);
     model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
     setMatrices(); //we set matrices 
-    mesh->render();
+    bear->render();
 
-    ////Rendering the plane
-    //prog.setUniform("Material.Kd", 0.1f, 0.1f, 0.1f);
-    //prog.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
-    //prog.setUniform("Material.Ka", 0.1f, 0.1f, 0.1f);
-    //prog.setUniform("Material.Shininess", 180.0f);
+    //Rendering the tree
+    prog.setUniform("Material.Kd", 0.5f, 0.5f, 0.5f);
+    prog.setUniform("Material.Ks", 0.8f, 0.8f, 0.8f);
+    prog.setUniform("Material.Ka", 0.6f, 0.6f, 0.6f);
+    prog.setUniform("Material.Shininess", 100.0f);
 
-    //model = mat4(1.0f);
-    //model = glm::translate(model, vec3(0.0f, -10.f, 0.0f)); //This involves the plain position (x, y, z)
-    //setMatrices(); //we set matrices 
-    //plane.render();
+    model = mat4(1.0f);
+    model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::translate(model, vec3(15.0f, -1.2f, -6.5f));
+    setMatrices(); //we set matrices 
+    tree->render();
+
+    
 
 
 }

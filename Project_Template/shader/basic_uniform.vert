@@ -44,10 +44,10 @@ vec3 camCoords;
         vec3 ambient = lights[light].La * Material.Ka;
 
 
-        //calculate diffuse here
-        vec3 s = normalize(vec3(lights[light].Position - pos)); //find out s vector
-        float sDotN = max( dot(s,n), 0.0 );//calculate dot product between s & n
-        vec3 diffuse = Material.Kd * sDotN;
+     //calculate diffuse here
+     vec3 s = normalize(vec3(lights[light].Position - pos)); //find out s vector
+     float sDotN = max( dot(s,n), 0.0 );//calculate dot product between s & n
+     vec3 diffuse = Material.Kd * sDotN;
 
     //calculate specular here
     vec3 spec = vec3(0.0);
@@ -81,20 +81,5 @@ void main()
          Colour += phongModel( i, camCoords, n );
     }
     
-    //TexCoord = VertexTexCoord;
-
-  //calculate light direction, notice the light is already in the view coordinates 
-  //vec3 s = normalize(vec3(lights[light].Position - pos));
-
-  //calculate dot product for vector s and n using max. Read about max in glsl documentation, if not clear talk to me
-  //float sn = max( dot(s,n), 0.0 );
-
-  //difuse formula for light calculations
-  //diffuse = lights.Ld* Material.Kd * sn;
-
-  //pass the colour to LightIntensity which will transfer it to the fragment shader
-
-  //turns any vertex position into model view projection in preparations to 
-  //graphics pipeline processes before fragment shader (clipping)
   gl_Position = MVP * vec4(VertexPosition,1.0); 
 } 

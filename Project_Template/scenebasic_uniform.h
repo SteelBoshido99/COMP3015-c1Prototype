@@ -26,7 +26,8 @@ private:
 
     Plane plane;
 
-    std::unique_ptr<ObjMesh> mesh;
+    std::unique_ptr<ObjMesh> bear;
+    std::unique_ptr<ObjMesh> tree;
 
     void setMatrices();
 
