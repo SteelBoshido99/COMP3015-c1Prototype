@@ -31,7 +31,7 @@ void SceneBasic_Uniform::initScene()
 
     //Lights
     float x, z;
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 2; i++)
     {
         std::stringstream name;
         name << "lights [" << i << "].Positions";
@@ -43,13 +43,13 @@ void SceneBasic_Uniform::initScene()
     //specular and diffuse light
     prog.setUniform("lights[0].L", vec3(0.0f, 0.0f, 0.8f));
     prog.setUniform("lights[1].L", vec3(0.0f, 0.8f, 0.8f));
-    prog.setUniform("lights[2].L", vec3(0.8f, 0.0f, 0.8f));
+    //prog.setUniform("lights[2].L", vec3(0.8f, 0.0f, 0.8f));
 
 
     //ambient light
     prog.setUniform("lights[0].La", vec3(0.0f, 0.0f, 0.8f));
-    prog.setUniform("lights[1].La", vec3(0.0f, 0.8f, 0.8f));
-    prog.setUniform("lights[2].La", vec3(0.8f, 0.0f, 0.8f));
+    //prog.setUniform("lights[1].La", vec3(0.0f, 0.8f, 0.8f));
+    prog.setUniform("lights[1].La", vec3(0.8f, 0.0f, 0.8f));
  
 }
 
@@ -83,7 +83,7 @@ void SceneBasic_Uniform::render()
     prog.setUniform("Material.Shininess", 180.0f);
 
     model = mat4(1.0f);
-    model = glm::rotate(model, glm::radians(-90.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(180.0f), vec3(0.0f, 1.0f, 0.0f));
     setMatrices(); //we set matrices 
     bear->render();
 
@@ -95,7 +95,7 @@ void SceneBasic_Uniform::render()
 
     model = mat4(1.0f);
     model = glm::scale(glm::mat4(1.0f), glm::vec3(0.9f, 0.5f, 0.9f));
-    model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(45.0f), vec3(0.0f, 1.0f, 0.0f));
     model = glm::translate(model, vec3(10.0f, -4.2f, -6.9f));
     setMatrices(); //we set matrices 
     tree->render();
