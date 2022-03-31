@@ -78,7 +78,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\GitHub\COMP3015-c1Prototype\Dependencies\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\rjfajutrao\Documents\GitHub\COMP3015-c1Prototype\Dependencies\include;D:\GitHub\COMP3015-c1Prototype\Dependencies\include;$(IncludePath)</IncludePath>
     <LibraryPath>D:\GitHub\COMP3015-c1Prototype\Dependencies\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
