@@ -10,8 +10,8 @@ using glm::mat4;
 
 //constructor for Racoon
 SceneBasic_Uniform::SceneBasic_Uniform() : plane(10.0f, 10.0f, 100, 100) {
-    bear = ObjMesh::load("../Project_Template/media/Bear.obj", true);
-    tree = ObjMesh::load("../Project_Template/media/lpTree.obj", true);
+    bear = ObjMesh::load("C:/Users/rjfajutrao/Documents/GitHub/COMP3015-c1Prototype/Project_Template/media/cow.obj", true);
+    tree = ObjMesh::load("C:/Users/rjfajutrao/Documents/GitHub/COMP3015-c1Prototype/Project_Template/media/ogre.obj", true);
     
 }
 
@@ -25,7 +25,7 @@ void SceneBasic_Uniform::initScene()
     model = mat4(1.0f);
 
     //Setting the coords for the camera view
-    view = glm::lookAt(vec3(5.0f, 1.0f, 5.0f), vec3(0.0f, 0.6f, 0.0f), vec3(0.0f, 5.0f, 0.0f));
+    view = glm::lookAt(vec3(0.0f, 0.0f, 5.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
     projection = mat4(1.0f);
 
@@ -40,7 +40,7 @@ void SceneBasic_Uniform::initScene()
         prog.setUniform(name.str().c_str(), view * glm::vec4(x, 1.2f, z + 1.0f, 1.0f));
     }
 
-    //Spot light
+    //specular and diffuse light
     prog.setUniform("lights[0].L", vec3(0.0f, 0.0f, 0.8f));
     prog.setUniform("lights[1].L", vec3(0.0f, 0.8f, 0.8f));
     prog.setUniform("lights[2].L", vec3(0.8f, 0.0f, 0.8f));
@@ -83,7 +83,7 @@ void SceneBasic_Uniform::render()
     prog.setUniform("Material.Shininess", 180.0f);
 
     model = mat4(1.0f);
-    model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(-90.0f), vec3(0.0f, 1.0f, 0.0f));
     setMatrices(); //we set matrices 
     bear->render();
 
@@ -94,14 +94,11 @@ void SceneBasic_Uniform::render()
     prog.setUniform("Material.Shininess", 100.0f);
 
     model = mat4(1.0f);
+    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.9f, 0.5f, 0.9f));
     model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
-    model = glm::translate(model, vec3(15.0f, -1.2f, -6.5f));
-    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.1f, 0.5f));
+    model = glm::translate(model, vec3(10.0f, -4.2f, -6.9f));
     setMatrices(); //we set matrices 
     tree->render();
-
-    
-
 
 }
 

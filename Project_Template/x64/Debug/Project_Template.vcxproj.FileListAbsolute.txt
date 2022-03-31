@@ -2,3 +2,5 @@ E:\University Work\COMP3015\Project_Template_Diffuse\Project_Template\x64\Debug\
 E:\University Work\COMP3015\Project_Template_Diffuse\Project_Template\x64\Debug\Project_Template.pdb
 D:\GitHub\COMP3015-c1Prototype\Project_Template\x64\Debug\Project_Template.exe
 D:\GitHub\COMP3015-c1Prototype\Project_Template\x64\Debug\Project_Template.pdb
+C:\Users\rjfajutrao\Documents\GitHub\COMP3015-c1Prototype\Project_Template\x64\Debug\Project_Template.exe
+C:\Users\rjfajutrao\Documents\GitHub\COMP3015-c1Prototype\Project_Template\x64\Debug\Project_Template.pdb
