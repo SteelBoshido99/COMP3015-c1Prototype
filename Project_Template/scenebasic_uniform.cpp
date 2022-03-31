@@ -96,6 +96,7 @@ void SceneBasic_Uniform::render()
     model = mat4(1.0f);
     model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
     model = glm::translate(model, vec3(15.0f, -1.2f, -6.5f));
+    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.1f, 0.5f));
     setMatrices(); //we set matrices 
     tree->render();
 
