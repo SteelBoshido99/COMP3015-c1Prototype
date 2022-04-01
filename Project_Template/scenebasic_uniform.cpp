@@ -11,7 +11,8 @@ using glm::mat4;
 //constructor for Racoon
 SceneBasic_Uniform::SceneBasic_Uniform() : plane(10.0f, 10.0f, 100, 100) {
     bear = ObjMesh::load("../Project_Template/media/Bear.obj", true);
-    tree = ObjMesh::load("../Project_Template/media/lpTree.obj", true);
+    tree = ObjMesh::load("../Project_Template/media/Tree.obj", true);
+    fox = ObjMesh::load("../Project_Template/media/Fox.obj", true);
     
 }
 
@@ -25,12 +26,12 @@ void SceneBasic_Uniform::initScene()
     model = mat4(1.0f);
 
     //Setting the coords for the camera view
-    view = glm::lookAt(vec3(5.0f, 1.0f, 5.0f), vec3(0.0f, 0.6f, 0.0f), vec3(0.0f, 5.0f, 0.0f));
+    view = glm::lookAt(vec3(10.0f, 1.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 5.0f, 0.0f));
 
     projection = mat4(1.0f);
 
-    //Lights
-    float x, z;
+    //For multiple lights
+    /*float x, z;
     for (int i = 0; i < 3; i++)
     {
         std::stringstream name;
@@ -38,18 +39,18 @@ void SceneBasic_Uniform::initScene()
         x = 2.0f * cosf((glm:: two_pi<float>() / 3) * i);
         z = 2.0f * sinf((glm::two_pi<float>() / 3) * i);
         prog.setUniform(name.str().c_str(), view * glm::vec4(x, 1.2f, z + 1.0f, 1.0f));
-    }
+    }*/
 
-    //Spot light
-    prog.setUniform("lights[0].L", vec3(0.0f, 0.0f, 0.8f));
-    prog.setUniform("lights[1].L", vec3(0.0f, 0.8f, 0.8f));
-    prog.setUniform("lights[2].L", vec3(0.8f, 0.0f, 0.8f));
+    //Diffuse and specular light
+    prog.setUniform("lights[0].L", vec3(1.0f, 1.0f, 1.0f));
+    /*prog.setUniform("lights[1].L", vec3(0.9f, 0.8f, 0.8f));
+    prog.setUniform("lights[2].L", vec3(0.8f, 0.0f, 0.8f));*/
 
 
     //ambient light
-    prog.setUniform("lights[0].La", vec3(0.0f, 0.0f, 0.8f));
-    prog.setUniform("lights[1].La", vec3(0.0f, 0.8f, 0.8f));
-    prog.setUniform("lights[2].La", vec3(0.8f, 0.0f, 0.8f));
+    prog.setUniform("lights[0].La", vec3(1.0f, 1.0f, 0.7f));
+   /* prog.setUniform("lights[1].La", vec3(0.0f, 0.8f, 0.8f));
+    prog.setUniform("lights[2].La", vec3(0.8f, 0.0f, 0.8f));*/
  
 }
 
@@ -76,31 +77,58 @@ void SceneBasic_Uniform::render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-    //Renddering the pig
+    //Renddering the bear
     prog.setUniform("Material.Kd", 0.4f, 0.4f, 0.4f);
     prog.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
     prog.setUniform("Material.Ka", 0.5f, 0.5f, 0.5f);
     prog.setUniform("Material.Shininess", 180.0f);
 
     model = mat4(1.0f);
+    model = glm::scale(glm::mat4(1.0f), glm::vec3(2.0f, 2.0f, 2.0f));
     model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::translate(model, vec3(0.0f, 0.0f, -6.5f));
     setMatrices(); //we set matrices 
     bear->render();
+
+
+    //Rendering the Fox
+    prog.setUniform("Material.Kd", 0.4f, 0.4f, 0.4f);
+    prog.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
+    prog.setUniform("Material.Ka", 0.5f, 0.5f, 0.5f);
+    prog.setUniform("Material.Shininess", 180.0f);
+
+
+    model = mat4(1.0f);
+    model = glm::scale(glm::mat4(1.0f), glm::vec3(2.0f, 2.0f, 2.0f));
+    model = glm::rotate(model, glm::radians(180.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::translate(model, vec3(5.0f, 0.0f, -5.5f));
+    setMatrices(); //we set matrices 
+    fox->render();
+
 
     //Rendering the tree
     prog.setUniform("Material.Kd", 0.5f, 0.5f, 0.5f);
     prog.setUniform("Material.Ks", 0.8f, 0.8f, 0.8f);
     prog.setUniform("Material.Ka", 0.6f, 0.6f, 0.6f);
-    prog.setUniform("Material.Shininess", 100.0f);
+    prog.setUniform("Material.Shininess", 50.0f);
 
+
+    //Tree 1
     model = mat4(1.0f);
+    model = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
     model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
-    model = glm::translate(model, vec3(15.0f, -1.2f, -6.5f));
-    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.1f, 0.5f));
+    model = glm::translate(model, vec3(5.0f, 0.0f, -6.5f));
     setMatrices(); //we set matrices 
     tree->render();
 
-    
+
+    //Tree2
+    model = mat4(1.0f);
+    model = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+    model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::translate(model, vec3(5.0f, 0.0f, 3.5f));
+    setMatrices(); //we set matrices 
+    tree->render();
 
 
 }

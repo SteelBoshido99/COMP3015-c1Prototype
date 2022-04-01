@@ -3,10 +3,16 @@
 //in variables, this are in model coordinates
 layout (location = 0) in vec3 VertexPosition; 
 layout (location = 1) in vec3 VertexNormal;
-//layout (location = 2) in vec2 VertexTexCoord;
+
+//Texture rendering
+layout (location = 2) in vec2 VertexTexCoord;
 
 //out vector needed for the fragment shader
 out vec3 Colour;
+
+//out vec3 Position;
+//out vec3 n;
+
 out vec2 TexCoord;
 
  //light information struct
@@ -41,7 +47,7 @@ vec3 camCoords;
  vec3 phongModel(int light, vec3 position, vec3 n)
 {
     //calculate ambient here, to access each light La value use this:
-        vec3 ambient = lights[light].La * Material.Ka;
+     vec3 ambient = lights[light].La * Material.Ka;
 
 
      //calculate diffuse here
@@ -80,6 +86,13 @@ void main()
     for( int i = 0; i < 3; i++ ){
          Colour += phongModel( i, camCoords, n );
     }
+
+    //BlinnPhong implementation
+//    n = normalize(NormalMatrix * VertexNormal);
+//    Position = (ModelViewMatrix * vec4(VertexPosition, 1.0)).xyz;
+//    gl_Position = MVP*vec4(VertexPosition, 1.0);
+
+    TexCoord = VertexTexCoord;
     
   gl_Position = MVP * vec4(VertexPosition,1.0); 
 } 
