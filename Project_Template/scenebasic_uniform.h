@@ -9,6 +9,7 @@
 
 #include "helper/plane.h"
 #include "helper/objmesh.h"
+#include "helper/texture.h"
 #include <glm/glm.hpp>
 
 
@@ -18,7 +19,7 @@ private:
     GLSLProgram prog;
     
 
-    //Cube cube;
+    Texture texRender;
 
     Plane plane;
 
