@@ -17,8 +17,6 @@ class SceneBasic_Uniform : public Scene
 {
 private:
     GLSLProgram prog;
-    
-
     Texture texRender;
 
     Plane plane;
@@ -26,7 +24,7 @@ private:
     std::unique_ptr<ObjMesh> bear;
     std::unique_ptr<ObjMesh> tree;
     std::unique_ptr<ObjMesh> fox;
-    std::unique_ptr<ObjMesh> moon;
+    std::unique_ptr<ObjMesh> floor;
 
     void setMatrices();
 

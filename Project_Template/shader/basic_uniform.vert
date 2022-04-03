@@ -6,7 +6,6 @@ layout (location = 1) in vec3 VertexNormal;
 layout (location = 2) in vec2 VertexTexCoord;
 
 //out vector needed for the fragment shader
-out vec3 Colour;
 out vec3 Position;
 out vec3 Normal;
 out vec2 TexCoord;

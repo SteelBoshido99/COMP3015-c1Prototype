@@ -12,7 +12,8 @@ using glm::mat4;
 SceneBasic_Uniform::SceneBasic_Uniform() : plane(10.0f, 10.0f, 100, 100) {
     bear = ObjMesh::load("../Project_Template/media/Bear.obj", true);
     tree = ObjMesh::load("../Project_Template/media/Tree.obj", true);
-    fox = ObjMesh::load("../Project_Template/media/Fox.obj", true);   
+    fox = ObjMesh::load("../Project_Template/media/Fox.obj", true); 
+    floor = ObjMesh::load("../Project_Template/media/Floor.obj", true);
 }
 
 void SceneBasic_Uniform::initScene()
@@ -24,37 +25,35 @@ void SceneBasic_Uniform::initScene()
     model = mat4(1.0f);
 
     //Setting the coords for the camera view
-    view = glm::lookAt(vec3(10.0f, 1.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 5.0f, 0.0f));
-
+    view = glm::lookAt(vec3(5.0f, 1.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 5.0f, 0.0f));
     projection = mat4(1.0f);
 
-    //For multiple lights
-    float x, z;
-    for (int i = 0; i < 3; i++)
-    {
-        std::stringstream name;
-        name << "lights [" << i << "].Positions";
-        x = 2.0f * cosf((glm:: two_pi<float>() / 3) * i);
-        z = 2.0f * sinf((glm::two_pi<float>() / 3) * i);
-        prog.setUniform(name.str().c_str(), view * glm::vec4(x, 1.2f, z + 1.0f, 1.0f));
-    }
+    vec3 lightSource = vec3(3.0f, 2.0f, 0.0f);
 
-    //Diffuse and specular light
-    prog.setUniform("lights[0].L", vec3(1.0f, 1.0f, 1.0f));
-    prog.setUniform("lights[1].L", vec3(0.9f, 0.8f, 0.8f));
-    prog.setUniform("lights[2].L", vec3(0.8f, 0.0f, 0.8f));
+    prog.setUniform("lights.La", 1.0f, 1.0f, 0.5f);
+    prog.setUniform("lights.L", 1.0f, 1.0f, 0.9f);
+    prog.setUniform("lights.Position", lightSource);
 
-    //ambient light
-    prog.setUniform("lights[0].La", vec3(1.0f, 1.0f, 1.0f));
-    prog.setUniform("lights[1].La", vec3(0.0f, 0.8f, 0.8f));
-    prog.setUniform("lights[2].La", vec3(0.8f, 0.0f, 0.8f));
-
-    //Picking out what texture to use
+    //Bear Texture
     GLuint bear = Texture::loadTexture("../Project_Template/media/texture/Bear.png");
-    GLuint 
-
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, bear);
+
+    //Fox Texture
+    GLuint foxTex = Texture::loadTexture("../Project_Template/media/texture/Fox.png");
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, foxTex);
+
+    //Tree Texture
+    GLuint treeTex = Texture::loadTexture("../Project_Template/media/texture/Tree.png");
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, treeTex);
+
+
+    //Floor Texture
+    GLuint floorTex = Texture::loadTexture("../Project_Template/media/texture/Floor.png");
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, floorTex);
 }
 
 void SceneBasic_Uniform::compile()
@@ -80,10 +79,10 @@ void SceneBasic_Uniform::render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //Renddering the bear
-    prog.setUniform("Material.Kd", 0.4f, 0.4f, 0.4f);
-    prog.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
-    prog.setUniform("Material.Ka", 0.5f, 0.5f, 0.5f);
-    prog.setUniform("Material.Shininess", 180.0f);
+    prog.setUniform("Material.Kd", 0.3f, 0.3f, 0.3f);
+    prog.setUniform("Material.Ks", 0.5f, 0.5f, 0.5f);
+    prog.setUniform("Material.Ka", 0.2f, 0.2f, 0.2f);
+    prog.setUniform("Material.Shininess", 1.0f);
 
     model = mat4(1.0f);
     model = glm::scale(glm::mat4(1.0f), glm::vec3(2.0f, 2.0f, 2.0f));
@@ -91,8 +90,6 @@ void SceneBasic_Uniform::render()
     model = glm::translate(model, vec3(0.0f, 0.0f, -6.5f));
     setMatrices(); 
     bear->render();
-
-    //Setting bear texture
     prog.setUniform("texRender", 0);
 
 
@@ -100,7 +97,7 @@ void SceneBasic_Uniform::render()
     prog.setUniform("Material.Kd", 0.4f, 0.4f, 0.4f);
     prog.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
     prog.setUniform("Material.Ka", 0.5f, 0.5f, 0.5f);
-    prog.setUniform("Material.Shininess", 180.0f);
+    prog.setUniform("Material.Shininess", 30.0f);
 
 
     model = mat4(1.0f);
@@ -109,6 +106,7 @@ void SceneBasic_Uniform::render()
     model = glm::translate(model, vec3(5.0f, 0.0f, -5.5f));
     setMatrices(); 
     fox->render();
+    prog.setUniform("texRender", 1);
 
 
     //Rendering the tree
@@ -116,6 +114,7 @@ void SceneBasic_Uniform::render()
     prog.setUniform("Material.Ks", 0.8f, 0.8f, 0.8f);
     prog.setUniform("Material.Ka", 0.6f, 0.6f, 0.6f);
     prog.setUniform("Material.Shininess", 50.0f);
+    prog.setUniform("texRender", 2);
 
 
     //Tree 1
@@ -131,9 +130,25 @@ void SceneBasic_Uniform::render()
     model = mat4(1.0f);
     model = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
     model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
-    model = glm::translate(model, vec3(5.0f, 0.0f, 3.5f));
+    model = glm::translate(model, vec3(-5.0f, 0.0f, -8.5f));
     setMatrices(); 
     tree->render();
+
+
+    //Floor
+    prog.setUniform("Material.Kd", 0.5f, 0.5f, 0.5f);
+    prog.setUniform("Material.Ks", 0.8f, 0.8f, 0.8f);
+    prog.setUniform("Material.Ka", 0.6f, 0.6f, 0.6f);
+    prog.setUniform("Material.Shininess", 1.0f);
+    prog.setUniform("texRender", 3);
+
+    model = mat4(1.0f);
+    model = glm::scale(glm::mat4(1.0f), glm::vec3(10.0f, 10.0f, 10.0f));
+    model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::translate(model, vec3(0.0f, -5.0f, 0.0f));
+    setMatrices();
+    floor->render();
+
 }
 
 void SceneBasic_Uniform::setMatrices()
