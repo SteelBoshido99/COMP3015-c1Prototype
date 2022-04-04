@@ -1,6 +1,6 @@
 # COMP3015-c1Prototype: Low-Poly Forest
 ---
-<p>This an OpenGl project that showcases custom shader using GLSL. The redered scene shows 3 animal and 3 tress on a plain, the models are low-poly meshes with a different texture for each of them. The final aim for this project, is to have a space ship abducting one of the animals as well as utilize multiple shaders to provide some visual variety. THe current shader that this scene is using is Blinn-Phong, it also has one spot light (This will be replaced with an alien beam in the final showcase). </p>
+<p>This is an OpenGl project that showcases custom shader using GLSL. The redered scene shows 3 animals and 3 trees on a plain, the models are low-poly meshes with a different texture for each of them. The final aim for this project, is to have a space ship abducting one of the animals as well as utilize multiple shaders to provide some visual variety. THe current shader that this scene is using is Blinn-Phong, it also has one spot light (This will be replaced with an alien beam in the final showcase). </p>
 
 ## Inspiration
 ---
@@ -21,3 +21,8 @@
 2. https://www.cgtrader.com/free-3d-models/plant/other/forest-assets-low-poly-including-bonus-animal - Tree and texture
 3. https://www.cgtrader.com/items/3452204/download-page - Fox and bear model and texture
 4. https://www.cgtrader.com/items/2632923/download-page - Racoon model
+
+
+![Screenshot 2022-04-04 045420](https://user-images.githubusercontent.com/55700855/161471211-e68534da-ee49-477f-96ce-f4c778f18656.jpg)
+![Screenshot 2022-04-04 045444](https://user-images.githubusercontent.com/55700855/161471219-b67b5614-2c8c-49b0-93fe-9008783f1baf.jpg)
+![Screenshot 2022-04-04 045508](https://user-images.githubusercontent.com/55700855/161471224-7068cd4d-b790-4ffc-9fd6-16c109e73a94.jpg)
