@@ -8,14 +8,16 @@ in vec3 Position; //World Space
 in vec3 Normal;
 in vec2 TexCoord;
 
-
  //light information struct
 uniform struct LightInfo 
 {
   vec4 Position;    // Light position in eye coords.
   vec3 La;         //Ambient light intensity
   vec3 L;         //Diffuse and Specular light intensity
-} lights;       //Add an arrey for multiple lights
+  vec3 Direction; //Direction of spotlight in cam coords
+  float Exponent; //Angular attenuation exponent
+  float Cutoff; //Cut off angle (0 - 3.14159../2)
+} spotLights;       
 
 
 //material information struct
@@ -28,34 +30,42 @@ uniform struct MaterialInfo
 } Material;
 
 
-vec3 blinnPhong( vec3 pos, vec3 n ) {
 
-     vec3 textureC = texture(Tex1, TexCoord).rgb;
-     vec3 ambient = textureC * lights.La;
+
+vec3 blinnPhong( vec3 pos, vec3 n ) {
+    vec3 diffuse = vec3(0.0);
+    vec3 spec = vec3(0.0);
+
+    vec3 textureC = texture(Tex1, TexCoord).rgb;
+    vec3 ambient = textureC * spotLights.La;
 
      //calculate diffuse here  
-    vec3 s = normalize(vec3(lights.Position) - pos); //find out s vector
+    vec3 s = normalize(vec3(spotLights.Position) - pos); //find out s vector
 
-     float sDotN = max( dot(s,n), 0.0 );//calculate dot product between s & n
-     vec3 diffuse = textureC * sDotN;
+    float cosAng = dot(-s, normalize(spotLights.Direction));
+    float angle = acos(cosAng);
+    float spotScale = 0.0;
 
-    //calculate specular here
-    vec3 spec = vec3(0.0);
-    
-    if (sDotN > 0.0)
-    {       
-        vec3 v = normalize(-Position.xyz);
-        vec3 h = normalize (v + s);
-        spec = Material.Ks * pow(max(dot(h, n), 0.0), Material.Shininess);
+    if(angle < spotLights.Cutoff) {
+        
+        spotScale = pow(cosAng,spotLights.Exponent);
+        float sDotN = max( dot(s,n), 0.0 );//calculate dot product between s & n
+        diffuse = textureC * sDotN;
+
+        //calculate specular here     
+        if (sDotN > 0.0)
+        {       
+            vec3 v = normalize(-pos.xyz);
+            vec3 h = normalize (v + s);
+            spec = Material.Ks * pow(max(dot(h, n), 0.0), Material.Shininess);
+        }
+
     }
-    return ambient + lights.L * (diffuse + spec);
+    return ambient + spotScale * spotLights.L * (diffuse + spec);
 }
 
 
 void main()
 {
-   
     FragColor = vec4(blinnPhong(Position, normalize(Normal)),1); 
-
-     //FragColor = vec4(phongColor, 1.0);
 }

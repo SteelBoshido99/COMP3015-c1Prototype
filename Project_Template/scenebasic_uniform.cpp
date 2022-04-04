@@ -7,13 +7,16 @@ using std::endl;
 #include <glm/gtc/matrix_transform.hpp>
 using glm::vec3;
 using glm::mat4;
+using glm::vec4;
+using glm::mat3;
+
 
 //constructor for Racoon
-SceneBasic_Uniform::SceneBasic_Uniform() : plane(10.0f, 10.0f, 100, 100) {
+SceneBasic_Uniform::SceneBasic_Uniform() : Rotation(0.0f), plane(10.0f, 10.0f, 100, 100) {
     bear = ObjMesh::load("../Project_Template/media/Bear.obj", true);
     tree = ObjMesh::load("../Project_Template/media/Tree.obj", true);
     fox = ObjMesh::load("../Project_Template/media/Fox.obj", true); 
-    floor = ObjMesh::load("../Project_Template/media/Floor.obj", true);
+    racoon = ObjMesh::load("../Project_Template/media/Racoon.obj", true);
 }
 
 void SceneBasic_Uniform::initScene()
@@ -23,37 +26,27 @@ void SceneBasic_Uniform::initScene()
    
     //initialise the model matrix
     model = mat4(1.0f);
-
-    //Setting the coords for the camera view
-    view = glm::lookAt(vec3(5.0f, 1.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 5.0f, 0.0f));
     projection = mat4(1.0f);
 
-    vec3 lightSource = vec3(3.0f, 2.0f, 0.0f);
+    //vec3 lightSource = vec3(3.0f, 2.0f, 0.0f);
+    prog.setUniform("spotLights.L", vec3(0.9f));
+    prog.setUniform("spotLights.La", vec3(0.2f));
+    prog.setUniform("spotLights.Exponent", 15.0f);
+    prog.setUniform("spotLights.Cutoff", glm::radians(2.0f));
 
-    prog.setUniform("lights.La", 1.0f, 1.0f, 0.5f);
-    prog.setUniform("lights.L", 1.0f, 1.0f, 0.9f);
-    prog.setUniform("lights.Position", lightSource);
-
-    //Bear Texture
-    GLuint bear = Texture::loadTexture("../Project_Template/media/texture/Bear.png");
+   
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, bear);
-
-    //Fox Texture
-    GLuint foxTex = Texture::loadTexture("../Project_Template/media/texture/Fox.png");
+    glBindTexture(GL_TEXTURE_2D, bearTex);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, foxTex);
-
-    //Tree Texture
-    GLuint treeTex = Texture::loadTexture("../Project_Template/media/texture/Tree.png");
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, treeTex);
-
-
-    //Floor Texture
-    GLuint floorTex = Texture::loadTexture("../Project_Template/media/texture/Floor.png");
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, floorTex);
+    glActiveTexture(GL_TEXTURE4);
+    glBindTexture(GL_TEXTURE_2D, racoonTex);
+
+  
 }
 
 void SceneBasic_Uniform::compile()
@@ -71,84 +64,133 @@ void SceneBasic_Uniform::compile()
 
 void SceneBasic_Uniform::update( float t )
 {
-	//update your angle here
+    Rotation = t;
 }
 
 void SceneBasic_Uniform::render()
 {
+    view = glm::lookAt(vec3(7.0f, 1.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+    view = glm::rotate(view, glm::radians(15.0f * Rotation), vec3(0.0f, 1.0f, 0.0f));
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    //Renddering the bear
+    //---------Spotlight implementation---------// 
+    vec4 lightPos = vec4(0.0f, 50.0f, 0.0f, 0.0f);
+    prog.setUniform("spotLights.Position", lightPos);
+
+    mat3 normalMatrix = mat3(vec3(view[0]), vec3(view[1]), vec3(view[2]));
+    prog.setUniform("spotLights.Direction", normalMatrix * vec3(-lightPos));
+    //---------Spotlight implementation---------//
+    
+    
+
+    //-----------Renddering the bear-------------//
     prog.setUniform("Material.Kd", 0.3f, 0.3f, 0.3f);
     prog.setUniform("Material.Ks", 0.5f, 0.5f, 0.5f);
     prog.setUniform("Material.Ka", 0.2f, 0.2f, 0.2f);
     prog.setUniform("Material.Shininess", 1.0f);
-
     model = mat4(1.0f);
-    model = glm::scale(glm::mat4(1.0f), glm::vec3(2.0f, 2.0f, 2.0f));
-    model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
-    model = glm::translate(model, vec3(0.0f, 0.0f, -6.5f));
+    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+    model = glm::rotate(model, glm::radians(45.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::translate(model, vec3(0.2f, 0.9f, -3.0f));
+
+    prog.setUniform("Tex1", 0);
     setMatrices(); 
     bear->render();
-    prog.setUniform("texRender", 0);
+    //-----------Renddering the bear-------------//
 
 
-    //Rendering the Fox
+
+    //---------Rendering the Fox----------//
     prog.setUniform("Material.Kd", 0.4f, 0.4f, 0.4f);
     prog.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
     prog.setUniform("Material.Ka", 0.5f, 0.5f, 0.5f);
     prog.setUniform("Material.Shininess", 30.0f);
-
-
     model = mat4(1.0f);
-    model = glm::scale(glm::mat4(1.0f), glm::vec3(2.0f, 2.0f, 2.0f));
-    model = glm::rotate(model, glm::radians(180.0f), vec3(0.0f, 1.0f, 0.0f));
-    model = glm::translate(model, vec3(5.0f, 0.0f, -5.5f));
+    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+    model = glm::rotate(model, glm::radians(125.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::translate(model, vec3(0.0f, 0.6f, -3.0f));
+
+    prog.setUniform("Tex1", 1);
     setMatrices(); 
     fox->render();
-    prog.setUniform("texRender", 1);
+    //---------Rendering the Fox----------//
 
+    //---------Rendering the racoon---------//
+    prog.setUniform("Material.Kd", 0.4f, 0.4f, 0.4f);
+    prog.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
+    prog.setUniform("Material.Ka", 0.5f, 0.5f, 0.5f);
+    prog.setUniform("Material.Shininess", 30.0f);
+    model = mat4(1.0f);
+    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f));
+    model = glm::rotate(model, glm::radians(-90.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::translate(model, vec3(0.0f, 4.0f, 0.0f));
+
+    prog.setUniform("Tex1", 4);
+    setMatrices();
+    racoon->render();
+    //---------Rendering the racoon---------//
+    
 
     //Rendering the tree
     prog.setUniform("Material.Kd", 0.5f, 0.5f, 0.5f);
     prog.setUniform("Material.Ks", 0.8f, 0.8f, 0.8f);
     prog.setUniform("Material.Ka", 0.6f, 0.6f, 0.6f);
     prog.setUniform("Material.Shininess", 50.0f);
-    prog.setUniform("texRender", 2);
-
+   
+    prog.setUniform("Tex1", 2);
 
     //Tree 1
     model = mat4(1.0f);
-    model = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.7f, 0.7f, 0.7f));
     model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
-    model = glm::translate(model, vec3(5.0f, 0.0f, -6.5f));
+    model = glm::translate(model, vec3(5.0f, 3.0f, 6.0f));
     setMatrices();  
     tree->render();
 
-
     //Tree2
     model = mat4(1.0f);
-    model = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.6f, 0.6f, 0.6f));
     model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
-    model = glm::translate(model, vec3(-5.0f, 0.0f, -8.5f));
+    model = glm::translate(model, vec3(-5.0f, 3.0f, -5.5f));
     setMatrices(); 
     tree->render();
 
-
-    //Floor
-    prog.setUniform("Material.Kd", 0.5f, 0.5f, 0.5f);
-    prog.setUniform("Material.Ks", 0.8f, 0.8f, 0.8f);
-    prog.setUniform("Material.Ka", 0.6f, 0.6f, 0.6f);
-    prog.setUniform("Material.Shininess", 1.0f);
-    prog.setUniform("texRender", 3);
-
+    //tree3
     model = mat4(1.0f);
-    model = glm::scale(glm::mat4(1.0f), glm::vec3(10.0f, 10.0f, 10.0f));
+    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.8f, 0.8f, 0.8f));
     model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
-    model = glm::translate(model, vec3(0.0f, -5.0f, 0.0f));
+    model = glm::translate(model, vec3(-3.0f, 3.0f, 4.5f));
     setMatrices();
-    floor->render();
+    tree->render();
 
+    //tree4
+    model = mat4(1.0f);
+    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.8f, 0.8f, 0.8f));
+    model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::translate(model, vec3(3.0f, 3.0f, 2.5f));
+    setMatrices();
+    tree->render();
+
+    //tree5
+    model = mat4(1.0f);
+    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.8f, 0.8f, 0.8f));
+    model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::translate(model, vec3(-5.0f, 3.0f, -2.5f));
+    setMatrices();
+    tree->render();
+
+    //---------Rendering the Plain--------//
+    prog.setUniform("Material.Kd", 0.3f, 0.3f, 0.3f);
+    prog.setUniform("Material.Ks", 0.5f, 0.5f, 0.5f);
+    prog.setUniform("Material.Ka", 0.2f, 0.2f, 0.2f);
+    prog.setUniform("Material.Shininess", 0.5f);
+    model = mat4(1.0f);
+    model = glm::translate(model, vec3(0.0f, 0.0f, 0.0f));
+    prog.setUniform("Tex1", 3);
+    setMatrices();
+    plane.render();
+    //---------Rendering the Plain--------//
 }
 
 void SceneBasic_Uniform::setMatrices()
