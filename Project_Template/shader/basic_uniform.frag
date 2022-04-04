@@ -9,7 +9,7 @@ in vec3 Normal;
 in vec2 TexCoord;
 
  //light information struct
-uniform struct LightInfo 
+uniform struct spotLightInfo 
 {
   vec4 Position;    // Light position in eye coords.
   vec3 La;         //Ambient light intensity

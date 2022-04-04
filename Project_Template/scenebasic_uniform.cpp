@@ -29,9 +29,9 @@ void SceneBasic_Uniform::initScene()
     projection = mat4(1.0f);
 
     //vec3 lightSource = vec3(3.0f, 2.0f, 0.0f);
-    prog.setUniform("spotLights.L", vec3(0.9f));
+    prog.setUniform("spotLights.L", vec3(0.7f));
     prog.setUniform("spotLights.La", vec3(0.2f));
-    prog.setUniform("spotLights.Exponent", 15.0f);
+    prog.setUniform("spotLights.Exponent", 5.0f);
     prog.setUniform("spotLights.Cutoff", glm::radians(2.0f));
 
    
@@ -70,7 +70,7 @@ void SceneBasic_Uniform::update( float t )
 void SceneBasic_Uniform::render()
 {
     view = glm::lookAt(vec3(7.0f, 1.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-    view = glm::rotate(view, glm::radians(15.0f * Rotation), vec3(0.0f, 1.0f, 0.0f));
+    view = glm::rotate(view, glm::radians(5.0f * Rotation), vec3(0.0f, 1.0f, 0.0f));
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -90,9 +90,9 @@ void SceneBasic_Uniform::render()
     prog.setUniform("Material.Ka", 0.2f, 0.2f, 0.2f);
     prog.setUniform("Material.Shininess", 1.0f);
     model = mat4(1.0f);
-    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+    model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
     model = glm::rotate(model, glm::radians(45.0f), vec3(0.0f, 1.0f, 0.0f));
-    model = glm::translate(model, vec3(0.2f, 0.9f, -3.0f));
+    model = glm::translate(model, vec3(0.2f, 0.9f, -4.0f));
 
     prog.setUniform("Tex1", 0);
     setMatrices(); 
@@ -107,7 +107,7 @@ void SceneBasic_Uniform::render()
     prog.setUniform("Material.Ka", 0.5f, 0.5f, 0.5f);
     prog.setUniform("Material.Shininess", 30.0f);
     model = mat4(1.0f);
-    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+    model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
     model = glm::rotate(model, glm::radians(125.0f), vec3(0.0f, 1.0f, 0.0f));
     model = glm::translate(model, vec3(0.0f, 0.6f, -3.0f));
 
@@ -122,9 +122,9 @@ void SceneBasic_Uniform::render()
     prog.setUniform("Material.Ka", 0.5f, 0.5f, 0.5f);
     prog.setUniform("Material.Shininess", 30.0f);
     model = mat4(1.0f);
-    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f));
+    model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
     model = glm::rotate(model, glm::radians(-90.0f), vec3(0.0f, 1.0f, 0.0f));
-    model = glm::translate(model, vec3(0.0f, 4.0f, 0.0f));
+    model = glm::translate(model, vec3(0.0f, 4.0f, -7.0f));
 
     prog.setUniform("Tex1", 4);
     setMatrices();
@@ -142,7 +142,7 @@ void SceneBasic_Uniform::render()
 
     //Tree 1
     model = mat4(1.0f);
-    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.7f, 0.7f, 0.7f));
+    model = glm::scale(model, glm::vec3(0.7f, 0.7f, 0.7f));
     model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
     model = glm::translate(model, vec3(5.0f, 3.0f, 6.0f));
     setMatrices();  
@@ -150,7 +150,7 @@ void SceneBasic_Uniform::render()
 
     //Tree2
     model = mat4(1.0f);
-    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.6f, 0.6f, 0.6f));
+    model = glm::scale(model, glm::vec3(0.6f, 0.6f, 0.6f));
     model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
     model = glm::translate(model, vec3(-5.0f, 3.0f, -5.5f));
     setMatrices(); 
@@ -158,25 +158,9 @@ void SceneBasic_Uniform::render()
 
     //tree3
     model = mat4(1.0f);
-    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.8f, 0.8f, 0.8f));
+    model = glm::scale(model, glm::vec3(0.8f, 0.8f, 0.8f));
     model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
     model = glm::translate(model, vec3(-3.0f, 3.0f, 4.5f));
-    setMatrices();
-    tree->render();
-
-    //tree4
-    model = mat4(1.0f);
-    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.8f, 0.8f, 0.8f));
-    model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
-    model = glm::translate(model, vec3(3.0f, 3.0f, 2.5f));
-    setMatrices();
-    tree->render();
-
-    //tree5
-    model = mat4(1.0f);
-    model = glm::scale(glm::mat4(1.0f), glm::vec3(0.8f, 0.8f, 0.8f));
-    model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
-    model = glm::translate(model, vec3(-5.0f, 3.0f, -2.5f));
     setMatrices();
     tree->render();
 
@@ -184,7 +168,7 @@ void SceneBasic_Uniform::render()
     prog.setUniform("Material.Kd", 0.3f, 0.3f, 0.3f);
     prog.setUniform("Material.Ks", 0.5f, 0.5f, 0.5f);
     prog.setUniform("Material.Ka", 0.2f, 0.2f, 0.2f);
-    prog.setUniform("Material.Shininess", 0.5f);
+    prog.setUniform("Material.Shininess", 0.0f);
     model = mat4(1.0f);
     model = glm::translate(model, vec3(0.0f, 0.0f, 0.0f));
     prog.setUniform("Tex1", 3);
