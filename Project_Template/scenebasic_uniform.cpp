@@ -37,12 +37,16 @@ void SceneBasic_Uniform::initScene()
    
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, bearTex);
+
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, foxTex);
+
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, treeTex);
+
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, floorTex);
+
     glActiveTexture(GL_TEXTURE4);
     glBindTexture(GL_TEXTURE_2D, racoonTex);
 
@@ -95,6 +99,7 @@ void SceneBasic_Uniform::render()
     model = glm::translate(model, vec3(0.2f, 0.9f, -4.0f));
 
     prog.setUniform("Tex1", 0);
+
     setMatrices(); 
     bear->render();
     //-----------Renddering the bear-------------//

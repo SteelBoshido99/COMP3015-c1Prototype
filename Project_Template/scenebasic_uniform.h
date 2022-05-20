@@ -7,7 +7,6 @@
 #include "helper/plane.h"
 #include "helper/objmesh.h"
 #include <glm/glm.hpp>
-
 #include "helper/texture.h"
 
 

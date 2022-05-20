@@ -44,6 +44,7 @@ vec3 blinnPhong( vec3 pos, vec3 n ) {
 
     float cosAng = dot(-s, normalize(spotLights.Direction));
     float angle = acos(cosAng);
+
     float spotScale = 0.0;
 
     if(angle < spotLights.Cutoff) {
