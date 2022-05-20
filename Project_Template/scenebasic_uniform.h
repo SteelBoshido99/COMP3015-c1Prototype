@@ -27,6 +27,10 @@ private:
     std::unique_ptr<ObjMesh> racoon;
     std::unique_ptr<ObjMesh> ufo;
 
+    void waterWaves();
+    float waveTime;
+    Plane plane2;
+
 
     //Bear Texture
     GLuint bearTex = Texture::loadTexture("../Project_Template/media/texture/Bear.png");
@@ -40,6 +44,7 @@ private:
     GLuint ufoTex = Texture::loadTexture("../Project_Template/media/texture/ufo.png");
 
     void setMatrices();
+   
 
     void compile();
 

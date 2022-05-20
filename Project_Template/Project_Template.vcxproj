@@ -162,6 +162,8 @@
   <ItemGroup>
     <None Include="shader\basic_uniform.frag" />
     <None Include="shader\basic_uniform.vert" />
+    <None Include="shader\vertexAnime.frag" />
+    <None Include="shader\vertexAnime.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="helper\aabb.h" />

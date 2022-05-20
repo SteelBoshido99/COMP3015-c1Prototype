@@ -16,7 +16,7 @@ using glm::mat3;
 
 
 //Change Variables
-int modelNum = 0;
+int modelNum = 2;
 int shaderNum = 0;
 int ufoIndex = 1;
 
@@ -44,7 +44,12 @@ void SceneBasic_Uniform::compile()
 	try {
 		prog.compileShader("shader/basic_uniform.vert");
 		prog.compileShader("shader/basic_uniform.frag");
-		prog.link();
+        prog.link();
+
+        vertexAnime.compileShader("shader/vertexAnime.frag");
+        vertexAnime.compileShader("shader/vertexAnime.vert");
+        vertexAnime.link();
+
 		prog.use();
 	} catch (GLSLProgramException &e) {
 		cerr << e.what() << endl;
@@ -84,7 +89,7 @@ void SceneBasic_Uniform::render()
 
         //Lighthing
         prog.setUniform("light.L", vec3(0.5f));
-        prog.setUniform("light.La", vec3(1.0f));
+        prog.setUniform("light.La", vec3(2.0f));
         prog.setUniform("light.Position", view * glm::vec4(0.0f, 1.2f, 0.0f + 1.0f, 1.0f));
              
         if (modelNum == 0) {
@@ -192,9 +197,11 @@ void SceneBasic_Uniform::render()
 
         mat4 spotLightPos = glm::lookAt(vec3(1.0f, -0.1f, 0.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
         vec4 lightPos = vec4(0.0f, 50.0f, 1.0f, 0.0f);
-        prog.setUniform("Spot.Position", vec3(spotLightPos* lightPos));
+
+        prog.setUniform("spotLights.Position", vec3(spotLightPos* lightPos));
+
         mat3 normalMatrix = mat3(vec3(spotLightPos[0]), vec3(spotLightPos[0]), vec3(spotLightPos[0]));
-        prog.setUniform("Spot.Direction", normalMatrix* vec3(-lightPos));
+        prog.setUniform("spotLights.Direction", normalMatrix* vec3(-lightPos));
 
         //---------Spotlight implementation---------//
 
@@ -280,24 +287,34 @@ void SceneBasic_Uniform::render()
         }
 
 
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, ufoTex);
+        //glActiveTexture(GL_TEXTURE1);
+        //glBindTexture(GL_TEXTURE_2D, ufoTex);
 
-        //---------Rendering the Plain--------//
-        prog.setUniform("Material.Kd", 0.3f, 0.3f, 0.3f);
-        prog.setUniform("Material.Ks", 0.5f, 0.5f, 0.5f);
-        prog.setUniform("Material.Ka", 0.2f, 0.2f, 0.2f);
-        prog.setUniform("Material.Shininess", 0.0f);
-        model = mat4(1.0f);
-        model = glm::translate(model, vec3(0.0f, 0.0f, 0.0f));
-        prog.setUniform("Tex1", 1);
-        setMatrices();
-        plane.render();
-        //---------Rendering the Plain--------//
+        ////---------Rendering the Plain--------//
+        //prog.setUniform("Material.Kd", 0.3f, 0.3f, 0.3f);
+        //prog.setUniform("Material.Ks", 0.5f, 0.5f, 0.5f);
+        //prog.setUniform("Material.Ka", 0.2f, 0.2f, 0.2f);
+        //prog.setUniform("Material.Shininess", 0.0f);
+        //model = mat4(1.0f);
+        //model = glm::translate(model, vec3(0.0f, 0.0f, 0.0f));
+        //prog.setUniform("Tex1", 1);
+        //setMatrices();
+        //plane.render();
+        ////---------Rendering the Plain--------//
     }
 
     
 }
+
+void SceneBasic_Uniform::waterWaves() {
+    vertexAnime.use();
+    prog.setUniform("Time", waveTime);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+
+}
+
 
 void SceneBasic_Uniform::setMatrices()
 {
@@ -315,7 +332,7 @@ void SceneBasic_Uniform::resize(int w, int h)
     glViewport(0, 0, w, h);
     width = w;
     height = h;
-    projection = glm::perspective(glm::radians(70.0f), (float)w / h, 0.3f, 100.0f);
+    projection = glm::perspective(glm::radians(60.0f), (float)w / h, 0.3f, 100.0f);
 }
 
 
