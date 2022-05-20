@@ -17,7 +17,7 @@ using glm::mat3;
 
 //Change Variables
 int modelNum = 0;
-int shaderNum = 1;
+int shaderNum = 0;
 int ufoIndex = 1;
 
 //constructor for Racoon
@@ -70,7 +70,7 @@ void SceneBasic_Uniform::render()
         }
     }*/
 
-    view = glm::lookAt(vec3(9.0f, 1.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+    view = glm::lookAt(vec3(8.0f, 1.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
     view = glm::rotate(view, glm::radians(5.0f * Rotation), vec3(0.0f, 1.0f, 0.0f));
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -83,13 +83,14 @@ void SceneBasic_Uniform::render()
         prog.setUniform("ShaderIndex", 0);
 
         //Lighthing
-        prog.setUniform("light.L", vec3(0.8f, 0.8f, 0.8f));
-        prog.setUniform("light.La", vec3(0.1f, 0.1f, 0.1f));
+        prog.setUniform("light.L", vec3(0.5f));
+        prog.setUniform("light.La", vec3(1.0f));
         prog.setUniform("light.Position", view * glm::vec4(0.0f, 1.2f, 0.0f + 1.0f, 1.0f));
-
-        
+             
         if (modelNum == 0) {
 
+           
+            //-----------Renddering the bear-------------//
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, bearTex);
 
@@ -101,12 +102,9 @@ void SceneBasic_Uniform::render()
             model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
             model = glm::rotate(model, glm::radians(45.0f), vec3(0.0f, 1.0f, 0.0f));
             model = glm::translate(model, vec3(0.0f, 0.9f, 0.0f));
-
             prog.setUniform("Tex1", 0);
-
             setMatrices();
             bear->render();
-            //-----------Renddering the bear-------------//
 
         } if (modelNum == 1) {
 
@@ -184,18 +182,20 @@ void SceneBasic_Uniform::render()
         prog.setUniform("ShaderIndex", 1);
 
         //Lighthing
-        prog.setUniform("spotLights.L", vec3(0.9f));
-        prog.setUniform("spotLights.La", vec3(0.6f));
-        prog.setUniform("spotLights.Exponent", 10.0f);
-        prog.setUniform("spotLights.Cutoff", glm::radians(20.5f));
+        prog.setUniform("spotLights.L", vec3(0.7f));
+        prog.setUniform("spotLights.La", vec3(0.2f));
+        prog.setUniform("spotLights.Exponent", 5.0f);
+        prog.setUniform("spotLights.Cutoff", glm::radians(2.0f));
 
 
         //---------Spotlight implementation---------// 
-        vec4 lightPos = vec4(0.0f, 50.0f, 0.0f, 0.0f);
-        prog.setUniform("spotLights.Position", lightPos);
 
-        mat3 normalMatrix = mat3(vec3(view[0]), vec3(view[1]), vec3(view[2]));
-        prog.setUniform("spotLights.Direction", normalMatrix* vec3(-lightPos));
+        mat4 spotLightPos = glm::lookAt(vec3(1.0f, -0.1f, 0.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+        vec4 lightPos = vec4(0.0f, 50.0f, 1.0f, 0.0f);
+        prog.setUniform("Spot.Position", vec3(spotLightPos* lightPos));
+        mat3 normalMatrix = mat3(vec3(spotLightPos[0]), vec3(spotLightPos[0]), vec3(spotLightPos[0]));
+        prog.setUniform("Spot.Direction", normalMatrix* vec3(-lightPos));
+
         //---------Spotlight implementation---------//
 
         glActiveTexture(GL_TEXTURE0);
@@ -278,24 +278,25 @@ void SceneBasic_Uniform::render()
             racoon->render();
             //---------Rendering the racoon---------//
         }
+
+
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, ufoTex);
+
+        //---------Rendering the Plain--------//
+        prog.setUniform("Material.Kd", 0.3f, 0.3f, 0.3f);
+        prog.setUniform("Material.Ks", 0.5f, 0.5f, 0.5f);
+        prog.setUniform("Material.Ka", 0.2f, 0.2f, 0.2f);
+        prog.setUniform("Material.Shininess", 0.0f);
+        model = mat4(1.0f);
+        model = glm::translate(model, vec3(0.0f, 0.0f, 0.0f));
+        prog.setUniform("Tex1", 1);
+        setMatrices();
+        plane.render();
+        //---------Rendering the Plain--------//
     }
 
     
-    
-  
-  
-
-    ////---------Rendering the Plain--------//
-    //prog.setUniform("Material.Kd", 0.3f, 0.3f, 0.3f);
-    //prog.setUniform("Material.Ks", 0.5f, 0.5f, 0.5f);
-    //prog.setUniform("Material.Ka", 0.2f, 0.2f, 0.2f);
-    //prog.setUniform("Material.Shininess", 0.0f);
-    //model = mat4(1.0f);
-    //model = glm::translate(model, vec3(0.0f, 0.0f, 0.0f));
-    //prog.setUniform("Tex1", 3);
-    //setMatrices();
-    //plane.render();
-    ////---------Rendering the Plain--------//
 }
 
 void SceneBasic_Uniform::setMatrices()
