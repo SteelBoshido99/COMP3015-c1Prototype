@@ -25,18 +25,19 @@ private:
     std::unique_ptr<ObjMesh> tree;
     std::unique_ptr<ObjMesh> fox;
     std::unique_ptr<ObjMesh> racoon;
+    std::unique_ptr<ObjMesh> ufo;
 
 
     //Bear Texture
     GLuint bearTex = Texture::loadTexture("../Project_Template/media/texture/Bear.png");
     //Fox Texture
     GLuint foxTex = Texture::loadTexture("../Project_Template/media/texture/Fox.png");
-    //Tree Texture
-    GLuint treeTex = Texture::loadTexture("../Project_Template/media/texture/Tree.png");
     //Floor texture
     GLuint floorTex = Texture::loadTexture("../Project_Template/media/texture/Floor.jpg");
     //Racoon texture
     GLuint racoonTex = Texture::loadTexture("../Project_Template/media/texture/Racoon.png");
+    //UFO texture
+    GLuint ufoTex = Texture::loadTexture("../Project_Template/media/texture/ufo.png");
 
     void setMatrices();
 
