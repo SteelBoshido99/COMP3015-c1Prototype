@@ -13,8 +13,8 @@ out vec2 TexCoord;
 uniform float Time;
 
 //wave parametres
-uniform float waveFreq = 2.5;
-uniform float waveVelocity = 2.5;
+uniform float waveFreq = 1.5;
+uniform float waveVelocity = 0.5;
 uniform float waveAmp = 0.6;
 
 //uniforms for matrices required in the shader

@@ -16,6 +16,7 @@ class SceneBasic_Uniform : public Scene
 private:
     GLSLProgram prog;
     GLSLProgram vertexAnime;
+    GLSLProgram edgyDect;
    
     Texture texRender;
     Plane plane;
@@ -23,13 +24,28 @@ private:
     float time;
 
     std::unique_ptr<ObjMesh> bear;
-    std::unique_ptr<ObjMesh> tree;
     std::unique_ptr<ObjMesh> fox;
     std::unique_ptr<ObjMesh> racoon;
     std::unique_ptr<ObjMesh> ufo;
 
+
+    //---Edge detection---//
+    GLuint fsQuad, fboHandle, renderTex;
+
+    float tPrev;
+    float rotSpeed;
+    float angle;
+
+    void edgeSetUp();
+    void setupFBO();
+    void pass1();
+    void pass2();
+    //---Edge detection---//
+
+    //---Vertex wave animation---//
     void waterWaves();
     float waveTime;
+    //---Vertex wave animation---//
 
 
     //Bear Texture

@@ -58,8 +58,7 @@ vec3 blinnPhong(vec3 position, vec3 n)
 
 void main()
 {
-    if(shaderNum == 0){
+    
          FragColor = vec4(blinnPhong(vec3(Position), normalize(Normal)), 1);
-    }
     
 }
