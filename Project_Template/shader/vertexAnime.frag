@@ -4,7 +4,7 @@ layout(location = 0) out vec4 FragColor;
 layout(binding = 0) uniform sampler2D Tex1;
 
 //Coordinaties for the models
-in vec3 Position; //World Space
+in vec4 Position; //World Space
 in vec3 Normal;
 in vec2 TexCoord;
 
@@ -59,7 +59,7 @@ vec3 blinnPhong(vec3 position, vec3 n)
 void main()
 {
     if(shaderNum == 0){
-         FragColor = vec4(blinnPhong(Position, normalize(Normal)), 1);
+         FragColor = vec4(blinnPhong(vec3(Position), normalize(Normal)), 1);
     }
     
 }

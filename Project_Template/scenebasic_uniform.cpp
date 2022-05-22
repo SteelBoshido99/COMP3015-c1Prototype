@@ -16,8 +16,8 @@ using glm::mat3;
 
 
 //Change Variables
-int modelNum = 2;
-int shaderNum = 0;
+int modelNum = 0;
+int shaderNum = 1;
 int ufoIndex = 1;
 
 //constructor for Racoon
@@ -60,6 +60,7 @@ void SceneBasic_Uniform::compile()
 void SceneBasic_Uniform::update( float t )
 {
     Rotation = t;
+    waveTime = t;
 }
 
 void SceneBasic_Uniform::render()
@@ -108,7 +109,7 @@ void SceneBasic_Uniform::render()
             model = glm::rotate(model, glm::radians(45.0f), vec3(0.0f, 1.0f, 0.0f));
             model = glm::translate(model, vec3(0.0f, 0.9f, 0.0f));
             prog.setUniform("Tex1", 0);
-            setMatrices();
+            setMatrices(prog);
             bear->render();
 
         } if (modelNum == 1) {
@@ -127,7 +128,7 @@ void SceneBasic_Uniform::render()
             model = glm::translate(model, vec3(0.0f, 0.6f, -3.0f));
 
             prog.setUniform("Tex1", 0);
-            setMatrices();
+            setMatrices(prog);
             fox->render();
             //---------Rendering the Fox----------//
 
@@ -148,7 +149,7 @@ void SceneBasic_Uniform::render()
             model = glm::translate(model, vec3(0.0f, 4.0f, -7.0f));
 
             prog.setUniform("Tex1", 0);
-            setMatrices();
+            setMatrices(prog);
             racoon->render();
             //---------Rendering the racoon---------//
         }
@@ -170,14 +171,16 @@ void SceneBasic_Uniform::render()
             model = glm::translate(model, vec3(0.0f, 30.0f, 0.0f));
 
             prog.setUniform("Tex1", 1);
-            setMatrices();
+            setMatrices(prog);
             ufo->render();
             //---Rendering a UFO---//
         }
      
+        waterWaves();
 
 
-    } if (shaderNum == 1) {
+    } 
+    if (shaderNum == 1) {
 
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -220,7 +223,7 @@ void SceneBasic_Uniform::render()
         model = glm::translate(model, vec3(0.0f, 30.0f, 0.0f));
 
         prog.setUniform("Tex1", 0);
-        setMatrices();
+        setMatrices(prog);
         ufo->render();
         //---Rendering a UFO---//
 
@@ -240,7 +243,7 @@ void SceneBasic_Uniform::render()
 
             prog.setUniform("Tex1", 0);
 
-            setMatrices();
+            setMatrices(prog);
             bear->render();
             //-----------Renddering the bear-------------//
 
@@ -260,7 +263,7 @@ void SceneBasic_Uniform::render()
             model = glm::translate(model, vec3(0.0f, 0.6f, -3.0f));
 
             prog.setUniform("Tex1", 0);
-            setMatrices();
+            setMatrices(prog);
             fox->render();
             //---------Rendering the Fox----------//
 
@@ -281,7 +284,7 @@ void SceneBasic_Uniform::render()
             model = glm::translate(model, vec3(0.0f, 4.0f, -7.0f));
 
             prog.setUniform("Tex1", 0);
-            setMatrices();
+            setMatrices(prog);
             racoon->render();
             //---------Rendering the racoon---------//
         }
@@ -309,22 +312,34 @@ void SceneBasic_Uniform::render()
 void SceneBasic_Uniform::waterWaves() {
     vertexAnime.use();
     prog.setUniform("Time", waveTime);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, seaTex);
+   
+    vertexAnime.setUniform("light.L", vec3(1.0f));
+    vertexAnime.setUniform("light.La", vec3(0.7f));
+    vertexAnime.setUniform("light.Position", view * glm::vec4(0.0f, 1.2f, 0.0f + 1.0f, 1.0f));
 
+    vertexAnime.setUniform("Material.Kd", 0.4f, 0.4f, 0.4f);
+    vertexAnime.setUniform("Material.Ks", 0.8f, 0.8f, 0.8f);
+    vertexAnime.setUniform("Material.Ka", 0.2f, 0.5f, 0.9f);
+    vertexAnime.setUniform("Material.Shininess", 10.0f);
+    model = mat4(1.0f);
+    model = glm::translate(model, vec3(0.0f, -1.0f, 0.0f));
 
+    setMatrices(vertexAnime);
+    plane.render();
 }
 
-
-void SceneBasic_Uniform::setMatrices()
+void SceneBasic_Uniform::setMatrices(GLSLProgram& set)
 {
     mat4 mv = view * model; //we create a model view matrix
     
-    prog.setUniform("ModelViewMatrix", mv); //set the uniform for the model view matrix
+    set.setUniform("ModelViewMatrix", mv); //set the uniform for the model view matrix
     
-    prog.setUniform("NormalMatrix", glm::mat3(vec3(mv[0]), vec3(mv[1]), vec3(mv[2]))); //we set the uniform for normal matrix
+    set.setUniform("NormalMatrix", glm::mat3(vec3(mv[0]), vec3(mv[1]), vec3(mv[2]))); //we set the uniform for normal matrix
     
-    prog.setUniform("MVP", projection * mv); //we set the model view matrix by multiplying the mv with the projection matrix
+    set.setUniform("MVP", projection * mv); //we set the model view matrix by multiplying the mv with the projection matrix
 }
 
 void SceneBasic_Uniform::resize(int w, int h)

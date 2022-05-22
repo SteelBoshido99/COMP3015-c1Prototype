@@ -15,6 +15,7 @@ class SceneBasic_Uniform : public Scene
 {
 private:
     GLSLProgram prog;
+    GLSLProgram vertexAnime;
    
     Texture texRender;
     Plane plane;
@@ -29,7 +30,6 @@ private:
 
     void waterWaves();
     float waveTime;
-    Plane plane2;
 
 
     //Bear Texture
@@ -42,8 +42,11 @@ private:
     GLuint racoonTex = Texture::loadTexture("../Project_Template/media/texture/Racoon.png");
     //UFO texture
     GLuint ufoTex = Texture::loadTexture("../Project_Template/media/texture/ufo.png");
+    //Water Texture
+    GLuint seaTex = Texture::loadTexture("../Project_Template/media/texture/waterTexture.jpg");
 
-    void setMatrices();
+    void setMatrices(GLSLProgram& set);
+   
    
 
     void compile();
