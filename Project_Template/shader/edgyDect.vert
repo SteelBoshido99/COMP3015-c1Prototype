@@ -6,7 +6,7 @@ layout (location = 1) in vec3 VertexNormal;
 layout (location = 2) in vec2 VertexTexCoord;
 
 //out vector needed for the fragment shader
-out vec4 Position;
+out vec3 Position;
 out vec3 Normal;
 out vec2 TexCoord;
 
@@ -35,10 +35,10 @@ void main()
     vec3 n = vec3(0.0);
     n.xy = normalize(vec2(cos( u ), 1.0));
 
-    Position = ModelViewMatrix * pos;
-    Normal = NormalMatrix * n;
+    Position = (ModelViewMatrix * vec4(VertexPosition, 1.0)).xyz;;
+    Normal = normalize(NormalMatrix * VertexNormal);
     TexCoord = VertexTexCoord;
 
     //Assign the position using the MVP data passed in
-    gl_Position = MVP * pos;
+    gl_Position = MVP * vec4(VertexPosition, 1.0);
 } 

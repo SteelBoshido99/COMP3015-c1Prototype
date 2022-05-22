@@ -291,6 +291,9 @@ void SceneBasic_Uniform::render()
         //plane.render();
         ////---------Rendering the Plain--------//
     }
+    if (shaderNum == 2) {//-----Edge Detection-----//
+
+    }
 
     
 }
