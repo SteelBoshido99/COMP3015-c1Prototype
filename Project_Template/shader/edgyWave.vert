@@ -6,14 +6,14 @@ layout (location = 1) in vec3 VertexNormal;
 layout (location = 2) in vec2 VertexTexCoord;
 
 //out vector needed for the fragment shader
-out vec4 Position;
+out vec3 Position;
 out vec3 Normal;
 out vec2 TexCoord;
 
 uniform float Time;
 
 //wave parametres
-uniform float waveFreq = 1.5;
+uniform float waveFreq = 3.5;
 uniform float waveVelocity = 0.8;
 uniform float waveAmp = 0.6;
 
@@ -35,7 +35,7 @@ void main()
     vec3 n = vec3(0.0);
     n.xy = normalize(vec2(cos( u ), 1.0));
 
-    Position = ModelViewMatrix * pos;
+    Position = vec3(ModelViewMatrix * pos);
     Normal = NormalMatrix * n;
     TexCoord = VertexTexCoord;
 

@@ -83,6 +83,12 @@
     <None Include="shader\edgyDect.vert">
       <Filter>shaders</Filter>
     </None>
+    <None Include="shader\edgyWave.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shader\edgyWave.vert">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="helper\scene.h">

@@ -35,7 +35,6 @@ void SceneBasic_Uniform::initScene()
 {
     compile();
 
-    glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
    
     //initialise the model matrix
@@ -65,6 +64,11 @@ void SceneBasic_Uniform::compile()
         edgyDect.compileShader("shader/edgyDect.vert");
         edgyDect.link();
         edgyDect.use();
+
+        edgyWave.compileShader("shader/edgyWave.frag");
+        edgyWave.compileShader("shader/edgyWave.vert");
+        edgyWave.link();
+        edgyWave.use();
 		
 
 	} catch (GLSLProgramException &e) {
@@ -313,27 +317,7 @@ void SceneBasic_Uniform::render()
     }    
 }
 
-void SceneBasic_Uniform::waterWaves() {
-    vertexAnime.use();
-    vertexAnime.setUniform("Time", waveTime);
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, seaTex);
-    
-    vertexAnime.setUniform("light.L", vec3(1.0f));
-    vertexAnime.setUniform("light.La", vec3(0.7f));
-    vertexAnime.setUniform("light.Position", view * glm::vec4(0.0f, 1.2f, 0.0f + 1.0f, 1.0f));
-
-    vertexAnime.setUniform("Material.Kd", 0.4f, 0.4f, 0.4f);
-    vertexAnime.setUniform("Material.Ks", 0.8f, 0.8f, 0.8f);
-    vertexAnime.setUniform("Material.Ka", 0.2f, 0.5f, 0.9f);
-    vertexAnime.setUniform("Material.Shininess", 10.0f);
-    model = mat4(1.0f);
-    model = glm::translate(model, vec3(0.0f, -1.0f, 0.0f));
-
-    setMatrices(vertexAnime);
-    plane.render();
-}
 
 void SceneBasic_Uniform::setMatrices(GLSLProgram& set)
 {
@@ -358,8 +342,9 @@ void SceneBasic_Uniform::resize(int w, int h)
 void SceneBasic_Uniform::edgeSetUp() {
      
     edgyDect.use();
+    edgyDect.setUniform("Time", time);
     compile();
-    glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+
     glEnable(GL_DEPTH_TEST);
     projection = mat4(1.0f);
     angle = glm::pi<float>() / 4.0f;
@@ -448,6 +433,7 @@ void SceneBasic_Uniform::pass1()
 
     view = glm::lookAt(vec3(25.0f * cos(angle), 3.0f, 7.0f * sin(angle)), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
     projection = glm::perspective(glm::radians(60.0f), (float)width / height, 0.3f, 100.0f);
+    view = glm::rotate(view, glm::radians(10.0f * time), vec3(0.0f, 1.0f, 0.0f));
 
 
     edgyDect.use();
@@ -466,6 +452,9 @@ void SceneBasic_Uniform::pass1()
     ufo->render();
     //---Rendering a UFO---//
 
+    //---Render Wave---//
+    waterWaves();
+
     if (modelNum == 0) {
 
         glActiveTexture(GL_TEXTURE0);
@@ -478,7 +467,7 @@ void SceneBasic_Uniform::pass1()
         model = mat4(1.0f);
         model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
         model = glm::rotate(model, glm::radians(45.0f * time), vec3(0.0f, 1.0f, 0.0f));
-        model = glm::translate(model, vec3(0.0f, 0.9f, 0.0f));
+        model = glm::translate(model, vec3(0.0f, 2.0f, 0.0f));
 
         edgyDect.setUniform("Tex1", 0);
 
@@ -500,7 +489,7 @@ void SceneBasic_Uniform::pass1()
         model = mat4(1.0f);
         model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
         model = glm::rotate(model, glm::radians(125.0f * time), vec3(0.0f, 1.0f, 0.0f));
-        model = glm::translate(model, vec3(0.0f, 0.6f, 0.0f));
+        model = glm::translate(model, vec3(0.0f, 2.0f, 0.0f));
 
         edgyDect.setUniform("Tex1", 0);
         setMatrices(edgyDect);
@@ -530,14 +519,6 @@ void SceneBasic_Uniform::pass1()
         //---------Rendering the racoon---------//
     }
 
-    edgyDect.setUniform("Material.Kd", 0.4f, 0.4f, 0.4f);
-    edgyDect.setUniform("Material.Ks", 0.0f, 0.0f, 0.0f);
-    edgyDect.setUniform("Material.Ka", 0.1f, 0.1f, 0.1f);
-    edgyDect.setUniform("Material.Shininess", 1.0f);
-    model = mat4(1.0f);
-    model = glm::translate(model, vec3(0.0f, -0.75f, 0.0f));
-    setMatrices(edgyDect);
-    plane.render();
 }
 
 void SceneBasic_Uniform::pass2()
@@ -561,7 +542,41 @@ void SceneBasic_Uniform::pass2()
 }
 //---------------------------------------------Edge Detection---------------------------------------------//
 
+void SceneBasic_Uniform::waterWaves() {
+   
+    if (shaderNum == 0) {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, seaTex);
 
+        vertexAnime.use();
+        vertexAnime.setUniform("Time", waveTime);
+
+        vertexAnime.setUniform("light.L", vec3(1.0f));
+        vertexAnime.setUniform("light.La", vec3(0.7f));
+        vertexAnime.setUniform("light.Position", view * glm::vec4(0.0f, 1.2f, 0.0f + 1.0f, 1.0f));
+
+        vertexAnime.setUniform("Material.Kd", 0.4f, 0.4f, 0.4f);
+        vertexAnime.setUniform("Material.Ks", 0.8f, 0.8f, 0.8f);
+        vertexAnime.setUniform("Material.Ka", 0.2f, 0.5f, 0.9f);
+        vertexAnime.setUniform("Material.Shininess", 10.0f);
+        model = mat4(1.0f);
+        model = glm::translate(model, vec3(0.0f, -1.0f, 0.0f));
+
+        setMatrices(vertexAnime);
+        plane.render();
+    }
+    if (shaderNum == 2) {
+        edgyWave.use();
+        edgyWave.setUniform("Time", waveTime);
+
+        model = mat4(1.0f);
+        model = glm::translate(model, vec3(0.0f, -1.0f, 0.0f));
+
+        setMatrices(edgyWave);
+        plane.render();
+    }
+    
+}
 
 
 

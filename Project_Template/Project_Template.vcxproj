@@ -164,6 +164,8 @@
     <None Include="shader\basic_uniform.vert" />
     <None Include="shader\edgyDect.frag" />
     <None Include="shader\edgyDect.vert" />
+    <None Include="shader\edgyWave.frag" />
+    <None Include="shader\edgyWave.vert" />
     <None Include="shader\vertexAnime.frag" />
     <None Include="shader\vertexAnime.vert" />
   </ItemGroup>

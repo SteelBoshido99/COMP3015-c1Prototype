@@ -17,6 +17,7 @@ private:
     GLSLProgram prog;
     GLSLProgram vertexAnime;
     GLSLProgram edgyDect;
+    GLSLProgram edgyWave;
    
     Texture texRender;
     Plane plane;
