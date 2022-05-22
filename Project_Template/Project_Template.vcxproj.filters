@@ -77,6 +77,12 @@
     <None Include="shader\vertexAnime.vert">
       <Filter>shaders</Filter>
     </None>
+    <None Include="shader\edgyDect.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shader\edgyDect.vert">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="helper\scene.h">

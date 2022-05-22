@@ -20,7 +20,7 @@ private:
     Texture texRender;
     Plane plane;
 
-    float Rotation;
+    float time;
 
     std::unique_ptr<ObjMesh> bear;
     std::unique_ptr<ObjMesh> tree;

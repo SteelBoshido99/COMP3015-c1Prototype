@@ -20,6 +20,7 @@ uniform struct spotLightInfo
   vec3 Direction; //Direction of spotlight in cam coords
   float Exponent; //Angular attenuation exponent
   float Cutoff; //Cut off angle (0 - 3.14159../2)
+
 } spotLights;
 
 uniform struct LightInfo
@@ -104,6 +105,7 @@ void main()
     if(shaderNum == 0){
          FragColor = vec4(blinnPhong(Position, normalize(Normal)), 1);
     }
+
     if(shaderNum == 1){      
         FragColor = vec4(blinnPhongSpot(Position, normalize(Normal)),1);
     }
