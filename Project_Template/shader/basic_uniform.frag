@@ -32,7 +32,7 @@ uniform struct MaterialInfo
 
 
 
-vec3 blinnPhong( vec3 pos, vec3 n ) {
+vec3 blinnPhongSpot( vec3 pos, vec3 n ) {
     vec3 diffuse = vec3(0.0);
     vec3 spec = vec3(0.0);
 
@@ -68,5 +68,5 @@ vec3 blinnPhong( vec3 pos, vec3 n ) {
 
 void main()
 {
-    FragColor = vec4(blinnPhong(Position, normalize(Normal)),1); 
+    FragColor = vec4(blinnPhongSpot(Position, normalize(Normal)),1); 
 }

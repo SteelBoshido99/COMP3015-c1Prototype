@@ -11,7 +11,7 @@ using glm::vec4;
 using glm::mat3;
 
 
-//constructor for Racoon
+//Constructor for rotation and plane. Loadds in the models
 SceneBasic_Uniform::SceneBasic_Uniform() : Rotation(0.0f), plane(10.0f, 10.0f, 100, 100) {
     bear = ObjMesh::load("../Project_Template/media/Bear.obj", true);
     tree = ObjMesh::load("../Project_Template/media/Tree.obj", true);
