@@ -10,17 +10,15 @@ using glm::mat4;
 using glm::vec4;
 using glm::mat3;
 
-
-
 //GUI Variables
 
 
 
 //---To render the bear use 0 || to render the fox use 1 || to render the racoon use 2---//
-int modelNum = 0;
+int modelNum = 1;
 
 //---to use Blinn-Phong use 0 || to use edge use 2 || to use spotlight use 1(in progress)---//
-int shaderNum = 2;
+int shaderNum = 0;
 
 
 //Constructors for time and plane, also loads in the models
