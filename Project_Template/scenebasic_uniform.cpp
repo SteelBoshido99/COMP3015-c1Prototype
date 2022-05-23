@@ -17,14 +17,14 @@ using glm::mat3;
 
 
 //---To render the bear use 0 || to render the fox use 1 || to render the racoon use 2---//
-int modelNum = 0;
+int modelNum = 2;
 
 //---to use Blinn-Phong use 0 || to use edge use 2 || to use spotlight use 1(in progress)---//
-int shaderNum = 0;
+int shaderNum = 2;
 
 
 //Constructors for time and plane, also loads in the models
-SceneBasic_Uniform::SceneBasic_Uniform() : time(0.0f), plane(100.0f, 100.0f, 100, 100){
+SceneBasic_Uniform::SceneBasic_Uniform() : time(0.0f), plane(50.0f, 50.0f, 100, 100){
     bear = ObjMesh::load("../Project_Template/media/Bear.obj", true);
     fox = ObjMesh::load("../Project_Template/media/Fox.obj", true);
     racoon = ObjMesh::load("../Project_Template/media/Racoon.obj", true);
@@ -432,7 +432,7 @@ void SceneBasic_Uniform::pass1()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     view = glm::lookAt(vec3(25.0f * cos(angle), 3.0f, 7.0f * sin(angle)), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-    projection = glm::perspective(glm::radians(60.0f), (float)width / height, 0.3f, 100.0f);
+    projection = glm::perspective(glm::radians(90.0f), (float)width / height, 0.3f, 100.0f);
     view = glm::rotate(view, glm::radians(10.0f * time), vec3(0.0f, 1.0f, 0.0f));
 
 
@@ -445,7 +445,7 @@ void SceneBasic_Uniform::pass1()
     model = mat4(1.0f);
     model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
     model = glm::rotate(model, glm::radians(45.0f * time), vec3(0.0f, 1.0f, 0.0f));
-    model = glm::translate(model, vec3(0.0f, 30.0f, 0.0f));
+    model = glm::translate(model, vec3(0.0f, 35.0f, 0.0f));
 
     edgyDect.setUniform("Tex1", 1);
     setMatrices(edgyDect);
@@ -465,9 +465,9 @@ void SceneBasic_Uniform::pass1()
         edgyDect.setUniform("Material.Ka", 0.2f, 0.2f, 0.2f);
         edgyDect.setUniform("Material.Shininess", 1.0f);
         model = mat4(1.0f);
-        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+        model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
         model = glm::rotate(model, glm::radians(45.0f * time), vec3(0.0f, 1.0f, 0.0f));
-        model = glm::translate(model, vec3(0.0f, 2.0f, 0.0f));
+        model = glm::translate(model, vec3(0.0f, 1.0f, 0.0f));
 
         edgyDect.setUniform("Tex1", 0);
 
@@ -487,7 +487,7 @@ void SceneBasic_Uniform::pass1()
         edgyDect.setUniform("Material.Ka", 0.5f, 0.5f, 0.5f);
         edgyDect.setUniform("Material.Shininess", 30.0f);
         model = mat4(1.0f);
-        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+        model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
         model = glm::rotate(model, glm::radians(125.0f * time), vec3(0.0f, 1.0f, 0.0f));
         model = glm::translate(model, vec3(0.0f, 2.0f, 0.0f));
 
@@ -509,7 +509,7 @@ void SceneBasic_Uniform::pass1()
         edgyDect.setUniform("Material.Ka", 0.5f, 0.5f, 0.5f);
         edgyDect.setUniform("Material.Shininess", 30.0f);
         model = mat4(1.0f);
-        model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
         model = glm::rotate(model, glm::radians(-90.0f * time), vec3(0.0f, 1.0f, 0.0f));
         model = glm::translate(model, vec3(0.0f, 4.0f, 0.0f));
 
