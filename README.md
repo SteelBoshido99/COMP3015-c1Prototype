@@ -6,9 +6,13 @@
 ---
 <p> The whole style of the scene is inspired by my personal use of low-poly assests in other projects that I've developed. The minimalistic aesthetic that low-poly themes provide is really appealing to me, and so I wanted to demonstrate that with this initial scene (https://github.com/SteelBoshido99/COMP3015-c1Prototype). This version of the graphical project shows a bear being abducted by a UFO</p> 
 
-## The Code base
+# The Code base
+## Edge Detection
 ---
-<p> The code base for the whole project is relatively easy to navigate through. scenebasic_uniform.h contains the classes that are used in scenebasic_uniform.cpp, THe textures are alos loaded in the header file, as well as the model meshes. The fragment shader holds the code calculations of the Blinn-phong method, which takes into account spotlight lighting to produce the scene. In this version the spot-light shader is non-fuctional, which is due to a missed detail (will be amended in the futire) The information for the spotlight and materials are held in the uniform structs in the fragment shader. The vertex shader gets the coordinates of the renderd models and their coresponding textures. The main chunk of coding is found in the scenebasic_uniform.cpp of the project, this is where the model meshes are retrieved and rendered. There is now code to completely change the look of the scene, determining which shaders are in play and which one's are not(instuctions on how to change the scene will be below). This version of the project now uses a vertex-animation shader, in the form of a wave as well as an edge detection shader which also utilises the wave animation (Has to have its own edge wave shader)</p>
+<p> This shader shows the boundries of an object. Using the edgyDect, frag and vert shader in the scenebasic_uniform.cpp it uses a two-pass execution which it first passes the image to a taxture, then applies the edge detection filter by reading from the rendered texture. The result is then sent to the view. The edgyWave frag and vert shader do this also. However, the difference is that it takes in a time value which is updated every frame, showing the wave moving with an edge detection filter. These shaders are done through custom methods which are enabled in the scenebasic_uniform.h file</p>
+
+## Vertex-Animation: Wave
+<p>Contained in it's own method, this converts vertecies from a surface, in this case a plane, to create a sine wave surface animation. using the tesselated quad a set of triagles is the used to create a flat surface on the x-z plane. The vertexAnime.vert then transforms the y coordinate by calculating each vertex against a time-baed sine function as well as generate a normal vector from the transformed vertex.</p>
 
 ## Extra Information
 ---
@@ -17,7 +21,7 @@
 
 ## YouTube link
 ---
-
+https://youtu.be/ie4LUxzKt_g
  
 ## External Asset Resources
 ---
