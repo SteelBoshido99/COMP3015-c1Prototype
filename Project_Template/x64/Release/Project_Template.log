@@ -1,2 +1,2 @@
 ﻿  glad.c
-D:\GitHub\COMP3015-c1Prototype\GLADSources\src\glad.c(25,10): fatal error C1083: Cannot open include file: 'glad/glad.h': No such file or directory
+D:\GitHub\COMP3015-c1Prototype\Project_Template\glad.c(25,10): fatal error C1083: Cannot open include file: 'glad/glad.h': No such file or directory

@@ -20,7 +20,7 @@ using glm::mat3;
 int modelNum = 0;
 
 //---to use Blinn-Phong use 0 || to use edge use 2 || to use spotlight use 1(in progress)---//
-int shaderNum = 0;
+int shaderNum = 2;
 
 
 //Constructors for time and plane, also loads in the models
